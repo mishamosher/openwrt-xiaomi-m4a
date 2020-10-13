@@ -299,9 +299,11 @@ endef
 TARGET_DEVICES += xiaomi_mir3g
 
 define Device/xiaomi_mir3g-v2
+  DTS := MIR3GV2
   MTK_SOC := mt7621
   IMAGE_SIZE := 14848k
   DEVICE_VENDOR := Xiaomi
+  DEVICE_TITLE := Xiaomi Mi Router 4A GIGABIT
   DEVICE_MODEL := Mi Router 3G
   DEVICE_VARIANT := v2
   DEVICE_ALT0_VENDOR := Xiaomi
