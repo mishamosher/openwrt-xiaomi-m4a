@@ -6888,7 +6888,7 @@ CONFIG_PACKAGE_wwan=m
 # Boot Loaders
 #
 # CONFIG_PACKAGE_fconfig is not set
-CONFIG_PACKAGE_uboot-envtools=m
+CONFIG_PACKAGE_uboot-envtools=y
 
 #
 # Compression
