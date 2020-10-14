@@ -299,6 +299,7 @@ endef
 TARGET_DEVICES += xiaomi_mir3g
 
 define Device/xiaomi_mir3g-v2
+  $(Device/uimage-lzma-loader)
   DTS := MIR3GV2
   MTK_SOC := mt7621
   IMAGE_SIZE := 14848k
