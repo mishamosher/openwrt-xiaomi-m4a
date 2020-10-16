@@ -302,6 +302,7 @@ define Device/xiaomi_mir3g-v2
   $(Device/uimage-lzma-loader)
   DTS := MIR3GV2
   MTK_SOC := mt7621
+  KERNEL_SIZE := 4096k
   IMAGE_SIZE := 14848k
   DEVICE_VENDOR := Xiaomi
   DEVICE_TITLE := Xiaomi Mi Router 4A GIGABIT
