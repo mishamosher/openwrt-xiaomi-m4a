@@ -5,6 +5,10 @@
           |__| W I R E L E S S   F R E E D O M
  -----------------------------------------------------
 
+## Read my README_mi4a.md for quick setup ***
+
+### To build quickly with default config use the supplied script './build.sh'
+
 This is the buildsystem for the OpenWrt Linux distribution.
 
 To build your own firmware you need a Linux, BSD or MacOSX system (case

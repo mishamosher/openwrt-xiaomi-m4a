@@ -8,8 +8,8 @@ echo "Update feeds..."
 echo "Install all packages from feeds..."
 ./scripts/feeds install -a
 
-echo "Copy default to make image"
-cp Config-Mi4a .config
+echo "Copy default custom config to make image"
+cp Config-custom .config
 
 echo "Set to use default config"
 make defconfig
