@@ -303,7 +303,8 @@ define Device/xiaomi_mir3g-v2
   DTS := MIR3GV2
   MTK_SOC := mt7621
   KERNEL_SIZE := 4096k
-  IMAGE_SIZE := 14848k
+  BLOCKSIZE := 64k
+  IMAGE_SIZE := 15204k
   DEVICE_VENDOR := Xiaomi
   DEVICE_TITLE := Xiaomi Mi Router 4A GIGABIT
   DEVICE_MODEL := Mi Router 3G
