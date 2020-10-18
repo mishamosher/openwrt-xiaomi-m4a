@@ -100,7 +100,21 @@ static void mt7621_hw_init(struct mt7620_gsw *gsw, struct device_node *np)
 
 	/* (GE1, Force 1000M/FD, FC OFF, MAX_RX_LENGTH 1536) */
 	mtk_switch_w32(gsw, 0x2305e30b, GSW_REG_MAC_P0_MCR);
-	mt7530_mdio_w32(gsw, 0x3600, 0x5e30b);
+	for (i = 0; i <= 6; i++) {
+		mt7530_mdio_w32(gsw, 0x3000 + (i * 0x100), 0x5e30b);
+	}
+
+	/* Disable Flow Control Globally */
+	val = mt7530_mdio_r32(gsw, 0x1FE0);
+	val &= ~BIT(31);
+	mt7530_mdio_w32(gsw, 0x1FE0, val);
+
+	/* turn off pause advertisement on all PHYs */
+	for (i = 0; i <= 4; i++) {
+		val = _mt7620_mii_read(gsw, i, 4);
+		val &= ~BIT(10);
+		_mt7620_mii_write(gsw, i, 4, val);
+	}
 
 	/* (GE2, Link down) */
 	mtk_switch_w32(gsw, 0x8000, GSW_REG_MAC_P1_MCR);
