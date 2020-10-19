@@ -100,7 +100,7 @@ static void mt7621_hw_init(struct mt7620_gsw *gsw, struct device_node *np)
 
 	/* (GE1, Force 1000M/FD, FC OFF, MAX_RX_LENGTH 1536) */
 	mtk_switch_w32(gsw, 0x2305e30b, GSW_REG_MAC_P0_MCR);
-	for (i = 0; i <= 6; i++) {
+	for (i = 5; i <= 6; i++) {
 		mt7530_mdio_w32(gsw, 0x3000 + (i * 0x100), 0x5e30b);
 	}
 
