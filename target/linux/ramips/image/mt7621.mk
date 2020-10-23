@@ -60,6 +60,14 @@ define Build/wr1201-factory-header
 	mv $@.new $@
 endef
 
+define Build/mir4ag-factory-header
+	mkimage -A $(LINUX_KARCH) \
+		-O linux -T kernel \
+		-C lzma -a $(KERNEL_LOADADDR) -e $(if $(KERNEL_ENTRY),$(KERNEL_ENTRY),$(KERNEL_LOADADDR)) \
+		-n 'R4A' -d $@ $@.new
+	mv $@.new $@
+endef
+
 define Build/netis-tail
 	echo -n $(1) >> $@
 	echo -n $(UIMAGE_NAME)-yun | $(STAGING_DIR_HOST)/bin/mkhash md5 | \
@@ -301,7 +309,10 @@ TARGET_DEVICES += xiaomi_mir3g
 define Device/xiaomi_mir4ag
   DTS := MIR4AG
   MTK_SOC := mt7621
-  KERNEL_SIZE := 4096k
+  KERNEL_SIZE := 2048k
+  KERNEL_INITRAMFS := $(KERNEL_DTB) | mir4ag-factory-header
+  KERNEL_ENTRY := 0x813F3080
+  KERNEL_LOADADDR := 0x81001000
   BLOCKSIZE := 64k
   IMAGE_SIZE := 15204k
   DEVICE_VENDOR := Xiaomi
