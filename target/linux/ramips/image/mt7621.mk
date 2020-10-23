@@ -311,7 +311,7 @@ define Device/xiaomi_mir4ag
   MTK_SOC := mt7621
   KERNEL_SIZE := 2048k
   KERNEL_INITRAMFS := $(KERNEL_DTB) | mir4ag-factory-header
-  BLOCKSIZE := 64k
+  BLOCKSIZE := 256k
   IMAGE_SIZE := 15204k
   DEVICE_VENDOR := Xiaomi
   DEVICE_TITLE := Xiaomi Mi Router 4A Gigabit
