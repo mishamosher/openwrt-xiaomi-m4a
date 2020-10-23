@@ -311,7 +311,6 @@ define Device/xiaomi_mir4ag
   MTK_SOC := mt7621
   KERNEL_SIZE := 2048k
   KERNEL_INITRAMFS := $(KERNEL_DTB) | mir4ag-factory-header
-  KERNEL_ENTRY := 0x81001000
   BLOCKSIZE := 64k
   IMAGE_SIZE := 15204k
   DEVICE_VENDOR := Xiaomi
