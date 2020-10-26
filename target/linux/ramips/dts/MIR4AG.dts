@@ -52,7 +52,8 @@
 	m25p80@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0>;
-		spi-max-frequency = <75000000>;
+		/* The SPI is capable of 80mhz, but corrupts above 33mhz? */
+		spi-max-frequency = <33000000>;
 
 		partitions {
 			compatible = "fixed-partitions";
