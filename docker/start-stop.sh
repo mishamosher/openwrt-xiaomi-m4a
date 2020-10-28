@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 
 ARGS="--rm --name mi4a-openwrt-recovery -d --cap-add NET_ADMIN --network host -v $PWD/dnsmasq.conf:/etc/dnsmasq.conf -v $PWD/tftpboot:/tftpboot"
 

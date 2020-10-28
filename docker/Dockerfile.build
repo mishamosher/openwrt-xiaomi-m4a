@@ -10,12 +10,9 @@ USER buser
 WORKDIR /home/buser
 
 # set dummy git config
-RUN git config --global user.name "buser" && git config --global user.email "buser@example.com"
-
-# git clone openwrt code
-RUN git clone https://gitlab.com/db260179/xiaomi-m4a.git openwrt
+RUN git config --global user.name "buser" && git config --global user.email "buser@mir4ag.com"
 
 # Switch to openwrt folder
 WORKDIR /home/buser/openwrt
 
-ENTRYPOINT ["/bin/bash", "-c", "./build.sh build-docker"]
+ENTRYPOINT [ "./build.sh" ]
