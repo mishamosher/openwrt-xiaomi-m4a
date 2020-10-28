@@ -4,9 +4,6 @@ ARGS="--rm --name mi4a-openwrt-imagebuild -d --cap-add NET_ADMIN -v $PWD/openwrt
 
 case "$1" in
   build-image)
-    if [ -e "$HOME/dl" ];then
-    ln -s $HOME/dl openwrt/dl
-    fi
     docker build -t mi4a-imagebuild:latest -f Dockerfile.build .
     ;;
   start-min)
