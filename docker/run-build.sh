@@ -6,6 +6,12 @@ case "$1" in
   build-image)
     docker build -t mi4a-imagebuild:latest -f Dockerfile.build .
     ;;
+  rebuild)
+    docker run $ARGS mi4a-imagebuild:latest build-rebuild
+    ;;
+  clean-min)
+    docker run $ARGS mi4a-imagebuild:latest clean-min
+    ;;
   start-min)
     docker run $ARGS mi4a-imagebuild:latest build-min
     ;;
@@ -19,7 +25,7 @@ case "$1" in
     docker restart mi4a-openwrt-imagebuild
     ;;
   *)
-    echo "Usage: $0 {build-image|start-min|start-full|stop|restart}" >&2
+    echo "Usage: $0 {build-image|rebuild|clean-min|start-min|start-full|stop|restart}" >&2
     exit 1
     ;;
 esac
