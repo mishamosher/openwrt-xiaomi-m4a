@@ -76,4 +76,4 @@ case "$1" in
     ;;
 esac
 
-exec "$@"
+#exec "$@"
