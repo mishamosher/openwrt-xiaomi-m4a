@@ -309,7 +309,7 @@ TARGET_DEVICES += xiaomi_mir3g
 define Device/xiaomi_mir4ag
   DTS := MIR4AG
   MTK_SOC := mt7621
-  IMAGE_SIZE := 15204k
+  IMAGE_SIZE := 14848k
   DEVICE_VENDOR := Xiaomi
   DEVICE_TITLE := Xiaomi Mi Router 4A Gigabit
   DEVICE_MODEL := Mi Router 4A
