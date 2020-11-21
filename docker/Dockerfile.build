@@ -4,7 +4,7 @@ ARG USERUID
 ARG USERGID
 
 ENV USERID=$USERUID \
-	GROUPID=$USERGID
+    GROUPID=$USERGID
 
 RUN apt-get update && \
     apt-get install -y time git-core subversion build-essential \
