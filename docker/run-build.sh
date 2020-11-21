@@ -1,10 +1,13 @@
 #!/bin/bash
 #set -x
+export USERUID="$(id -u)"
+export USERGID="$(id -g)"
+BARGS="--build-arg USERUID=$USERUID --build-arg USERGID=$USERGID"
 ARGS="--rm --name mi4a-openwrt-imagebuild -d --cap-add NET_ADMIN -v $PWD/openwrt:/home/buser/openwrt"
 
 case "$1" in
   build-image)
-    docker build -t mi4a-imagebuild:latest -f Dockerfile.build .
+    docker build $BARGS -t mi4a-imagebuild:latest -f Dockerfile.build .
     ;;
   rebuild)
     docker run $ARGS mi4a-imagebuild:latest build-rebuild
