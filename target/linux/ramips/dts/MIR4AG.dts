@@ -8,7 +8,7 @@
 
 / {
 	compatible = "xiaomi,mir4ag", "mediatek,mt7621-soc";
-	model = "Xiaomi Mi Router 4a gigabit";
+	model = "Xiaomi Mi Router 4A Gigabit Edition";
 
 	aliases {
 		led-boot = &led_status_yellow;
