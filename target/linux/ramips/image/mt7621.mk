@@ -311,7 +311,7 @@ define Device/xiaomi_mir4ag
   MTK_SOC := mt7621
   IMAGE_SIZE := 14848k
   DEVICE_VENDOR := Xiaomi
-  DEVICE_TITLE := Xiaomi Mi Router 4A Gigabit
+  DEVICE_TITLE := Xiaomi Mi Router 4A Gigabit Edition
   DEVICE_MODEL := Mi Router 4A
   DEVICE_PACKAGES := kmod-mt7603 kmod-mt76x2 wpad-basic uboot-envtools
 endef
