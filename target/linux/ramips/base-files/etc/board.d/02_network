@@ -314,6 +314,7 @@ ramips_setup_interfaces()
 	xiaomi,mir4ag)
 		ucidef_add_switch "switch0" \
 			"2:lan:2" "3:lan:1" "4:wan" "6@eth0"
+		ucidef_set_interface_lan "eth0.1 ra0 rai0"
 		;;
 	cy-swr1100)
 		ucidef_add_switch "switch0" \
