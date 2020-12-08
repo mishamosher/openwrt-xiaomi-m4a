@@ -433,7 +433,7 @@ PNDIS_PACKET ClonePacket(BOOLEAN moniflag, PNET_DEV ndev, PNDIS_PACKET pkt, UCHA
 
 	ASSERT(pkt);
 #ifdef SNIFFER_SUPPORT
-	if (moniflag == FALSE)								
+	if (moniflag == FALSE)
 #endif
 	ASSERT(sz < 1530);
 	pRxPkt = RTPKT_TO_OSPKT(pkt);
@@ -1951,7 +1951,7 @@ VOID RtmpDrvAllMacPrint(
 				MTWF_LOG(DBG_CAT_INIT, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("no file write method\n"));
 			}
 #else
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 19, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 			kernel_write(file_w, msg, strlen(msg), &file_w->f_pos);
 
 #else
@@ -2016,7 +2016,7 @@ VOID RtmpDrvAllE2PPrint(
 					MTWF_LOG(DBG_CAT_INIT, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("no file write method\n"));
 				}
 #else
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 19, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 				kernel_write(file_w, msg, strlen(msg), &file_w->f_pos);
 
 #else
@@ -2069,7 +2069,7 @@ VOID RtmpDrvAllRFPrint(
 				MTWF_LOG(DBG_CAT_INIT, DBG_SUBCAT_ALL, DBG_LVL_ERROR, ("no file write method\n"));
 			}
 #else
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 19, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 			kernel_write(file_w, pBuf, BufLen, &file_w->f_pos);
 
 #else
