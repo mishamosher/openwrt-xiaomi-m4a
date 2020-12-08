@@ -73,6 +73,7 @@ if next(diff) ~= nil then
                 <td>
                     <select name="CountryCode" style="width:auto">
                         <option value="US" id="advCountryCodeUS" <% if cfgs.CountryCode == "US" then %> selected="selected"<% end %>>US (United States)</option>
+                        <option value="GB" id="advCountryCodeGB" <% if cfgs.CountryCode == "GB" then %> selected="selected"<% end %>>GB (United Kingdom)</option>
                         <option value="JP" id="advCountryCodeJP" <% if cfgs.CountryCode == "JP" then %> selected="selected"<% end %>>JP (Japan)</option>
                         <option value="FR" id="advCountryCodeFR" <% if cfgs.CountryCode == "FR" then %> selected="selected"<% end %>>FR (France)</option>
                         <option value="TW" id="advCountryCodeTW" <% if cfgs.CountryCode == "TW" then %> selected="selected"<% end %>>TW (Taiwan)</option>
@@ -96,8 +97,8 @@ if next(diff) ~= nil then
                 <td>Wireless Mode</td>
                 <td>
                     <select style="width:auto" name="HT_OpMode">
-                        <option value="0" <% if cfgs.HT_OpMode == "0" then %> selected="selected"<% end%>>正常模式</option>
-                        <option value="1" <% if cfgs.HT_OpMode == "1" then %> selected="selected"<% end%>>绿色模式</option>
+                        <option value="0" <% if cfgs.HT_OpMode == "0" then %> selected="selected"<% end%>>Normal mode</option>
+                        <option value="1" <% if cfgs.HT_OpMode == "1" then %> selected="selected"<% end%>>Green mode</option>
                     </select>
                 </td>
                 <td></td>
@@ -522,7 +523,7 @@ if next(diff) ~= nil then
             } else if (is_mode_aband(mode)) {
                 cr = "<%=cfgs.CountryRegionABand%>";
             } else {
-                alert("Cannot get valid CountryRegion from invalid WireleeMode");
+                alert("Cannot get valid Country Region from invalid Wireless Mode");
             }
         }
 
@@ -598,7 +599,7 @@ if next(diff) ~= nil then
         if (select.length > 0)
             select.disabled = false;
         else
-            alert("[Warning] 5G 2nd 80Mhz Channel is not available. Please Check CountryRegion.");
+            alert("[Warning] 5G 2nd 80Mhz Channel is not available. Please Check Country Region.");
     }
 
     function get5G2nd80MhzChannelList(bw, ch) {
