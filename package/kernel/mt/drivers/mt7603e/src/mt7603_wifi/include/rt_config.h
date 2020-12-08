@@ -239,7 +239,7 @@
 #endif /* DOT11_VHT_AC */
 
 
-
+#include <linux/sched/signal.h>
 
 #ifdef WORKQUEUE_BH
 #include <linux/workqueue.h>

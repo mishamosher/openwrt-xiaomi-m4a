@@ -157,7 +157,7 @@ static inline VOID __RTMP_OS_Init_Timer(
 	IN PVOID data)
 {
 	if (!timer_pending(pTimer)) {
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 19, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 		timer_setup(pTimer, function, 0);
 #else
 		init_timer(pTimer);
@@ -459,7 +459,7 @@ PNDIS_PACKET CopyPacket(PNET_DEV ndev, PNDIS_PACKET pkt, ULONG sz)
 	pCopyPkt = pskb_copy(pRxPkt, MEM_ALLOC_FLAG);
 	if(sz)
 		skb_pull(pCopyPkt,sz);
-	
+
 	return pCopyPkt;
 }
 
@@ -905,7 +905,7 @@ static inline void __RtmpOSFSInfoChange(OS_FS_INFO * pOSFSInfo, BOOLEAN bSet)
       kgid_t gid;
 
       uid = current_fsuid();
-      gid = current_fsgid(); 
+      gid = current_fsgid();
       pOSFSInfo->fsuid = (int)uid.val;
       pOSFSInfo->fsgid = (int)gid.val;
 #else

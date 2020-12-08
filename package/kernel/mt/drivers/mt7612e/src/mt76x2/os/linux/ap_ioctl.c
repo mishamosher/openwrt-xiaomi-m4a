@@ -32,11 +32,11 @@
 #include <linux/wireless.h>
 
 struct iw_priv_args ap_privtab[] = {
-{ RTPRIV_IOCTL_SET, 
+{ RTPRIV_IOCTL_SET,
 /* 1024 --> 1024 + 512 */
 /* larger size specific to allow 64 ACL MAC addresses to be set up all at once. */
   IW_PRIV_TYPE_CHAR | 1536, 0,
-  "set"},  
+  "set"},
 { RTPRIV_IOCTL_SHOW,
   IW_PRIV_TYPE_CHAR | 1024, 0,
   "show"},
@@ -47,20 +47,20 @@ struct iw_priv_args ap_privtab[] = {
   0 ,
 #endif /* AIRPLAY_SUPPORT */
   IW_PRIV_TYPE_CHAR | 1024 ,
-  "get_site_survey"}, 
+  "get_site_survey"},
 #ifdef INF_AR9
   { RTPRIV_IOCTL_GET_AR9_SHOW,
   IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024 ,
-  "ar9_show"}, 
+  "ar9_show"},
 #endif
 #ifdef WSC_AP_SUPPORT
   { RTPRIV_IOCTL_SET_WSCOOB,
   IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024 ,
-  "set_wsc_oob"}, 
+  "set_wsc_oob"},
 #endif
 { RTPRIV_IOCTL_GET_MAC_TABLE,
   IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024 ,
-  "get_mac_table"}, 
+  "get_mac_table"},
 { RTPRIV_IOCTL_E2P,
   IW_PRIV_TYPE_CHAR | 1024, IW_PRIV_TYPE_CHAR | 1024,
   "e2p"},
@@ -100,7 +100,7 @@ const struct iw_handler_def rt28xx_ap_iw_handler_def =
 	.num_private_args	= N(ap_privtab),
 #if IW_HANDLER_VERSION >= 7
 	.get_wireless_stats = rt28xx_get_wireless_stats,
-#endif 
+#endif
 };
 #endif /* CONFIG_APSTA_MIXED_SUPPORT */
 
@@ -116,7 +116,7 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 	UINT32		org_len;
 	RT_CMD_AP_IOCTL_CONFIG IoctlConfig, *pIoctlConfig = &IoctlConfig;
 
-	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
+	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
 	if (pAd == NULL)
 	{
@@ -149,7 +149,7 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 	}
 
 	apidx = pIoctlConfig->apidx;
-	
+
     /*+ patch for SnapGear Request even the interface is down */
     if(cmd== SIOCGIWNAME){
 	    DBGPRINT(RT_DEBUG_TRACE, ("IOCTL::SIOCGIWNAME\n"));
@@ -216,7 +216,7 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 			wrqin->u.freq.e = 0;
 			wrqin->u.freq.i = 0;
 		}
-			break; 
+			break;
 		case SIOCSIWFREQ: /*set channel/frequency (Hz) */
 			Status = RTMP_IO_EOPNOTSUPP;
 			break;
@@ -301,7 +301,7 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 				os_free_mem(NULL, prange);
 		    }
 		    break;
-		    
+
 		case RT_PRIV_IOCTL:
 		case RT_PRIV_IOCTL_EXT:
 		{
@@ -310,7 +310,7 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 			Status = RTMP_AP_IoctlHandle(pAd, wrq, CMD_RT_PRIV_IOCTL, subcmd, wrqin->u.data.pointer, 0);
 		}
 			break;
-		
+
 #ifdef HOSTAPD_SUPPORT
 		case SIOCSIWGENIE:
 			DBGPRINT(RT_DEBUG_TRACE,("ioctl SIOCSIWGENIE apidx=%d\n",apidx));
@@ -322,9 +322,9 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 #endif /* HOSTAPD_SUPPORT */
 
 		case SIOCGIWPRIV:
-			if (wrqin->u.data.pointer) 
+			if (wrqin->u.data.pointer)
 			{
-				if (access_ok(wrqin->u.data.pointer, sizeof(ap_privtab)) != TRUE)
+				if (access_ok(VERIFY_WRITE, wrqin->u.data.pointer, sizeof(ap_privtab)) != TRUE)
 					break;
 				if ((sizeof(ap_privtab) / sizeof(ap_privtab[0])) <= wrq->u.data.length)
 				{
@@ -338,25 +338,25 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 			break;
 		case RTPRIV_IOCTL_SET:
 			{
-				if(access_ok(wrqin->u.data.pointer, wrqin->u.data.length) == TRUE)
+				if(access_ok(VERIFY_READ, wrqin->u.data.pointer, wrqin->u.data.length) == TRUE)
 					Status = RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_SET, 0, NULL, 0);
 			}
 			break;
-		    
+
 		case RTPRIV_IOCTL_SHOW:
 			{
-				if(access_ok(wrqin->u.data.pointer, wrqin->u.data.length) == TRUE)
+				if(access_ok(VERIFY_READ, wrqin->u.data.pointer, wrqin->u.data.length) == TRUE)
 					Status = RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_SHOW, 0, NULL, 0);
 			}
-			break;	
-			
+			break;
+
 #if defined(INF_AR9) || defined(BB_SOC)
 #if defined(AR9_MAPI_SUPPORT) || defined(BB_SOC)
 		case RTPRIV_IOCTL_GET_AR9_SHOW:
 			{
 				if( access_ok(VERIFY_READ, wrqin->u.data.pointer, wrqin->u.data.length) == TRUE)
 					Status = RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_GET_AR9_SHOW, 0, NULL, 0);
-			}	
+			}
 		    break;
 #endif /* defined(INF_AR9) || defined(BB_SOC) */
 #endif /* defined(AR9_MAPI_SUPPORT) || defined(BB_SOC) */
@@ -405,11 +405,11 @@ INT rt28xx_ap_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
 		case RTPRIV_IOCTL_BBP:
 			RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_BBP, 0, NULL, 0);
 			break;
-			
+
 		case RTPRIV_IOCTL_MAC:
 			RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_MAC, 0, NULL, 0);
 			break;
-            
+
 #ifdef RTMP_RF_RW_SUPPORT
 		case RTPRIV_IOCTL_RF:
 			RTMP_AP_IoctlHandle(pAd, wrq, CMD_RTPRIV_IOCTL_RF, 0, NULL, 0);

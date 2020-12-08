@@ -549,7 +549,7 @@ do { \
 #define	THREAD_PID_INIT_VALUE	NULL
 /* TODO: Use this IOCTL carefully when linux kernel version larger than 2.6.27, because the PID only correct when the user space task do this ioctl itself. */
 /*#define RTMP_GET_OS_PID(_x, _y)    _x = get_task_pid(current, PIDTYPE_PID); */
-#define RT_GET_OS_PID(_x, _y)		do {rcu_read_lock(); _x = current->thread_pid; rcu_read_unlock(); } while (0)
+#define RT_GET_OS_PID(_x, _y)		do {rcu_read_lock(); _x = current->pids[PIDTYPE_PID].pid; rcu_read_unlock(); } while (0)
 #ifdef OS_ABL_FUNC_SUPPORT
 #define RTMP_GET_OS_PID(_a, _b)			RtmpOsGetPid(&_a, _b)
 #else
@@ -654,7 +654,7 @@ struct os_cookie {
 #endif /* RTMP_MAC_PCI */
 
 
-	
+
 	UINT32		     pAd_va;
 
 #if defined(RTMP_MAC_PCI) || defined(RTMP_MAC_USB)

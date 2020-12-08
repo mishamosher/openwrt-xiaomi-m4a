@@ -71,7 +71,7 @@ static inline void *netdev_priv(struct net_device *dev)
 #endif
 
 /*
-	Used for backward compatible with previous linux version which 
+	Used for backward compatible with previous linux version which
 	used "net_device->priv" as device driver structure hooking point
 */
 static inline void netdev_priv_set(struct net_device *dev, void *priv)
@@ -157,7 +157,7 @@ static inline VOID __RTMP_OS_Init_Timer(
 	IN PVOID data)
 {
 	if (!timer_pending(pTimer)) {
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 19, 0))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
 		timer_setup(pTimer, function, 0);
 #else
 		init_timer(pTimer);
@@ -430,14 +430,14 @@ void RTMP_QueryPacketInfo(
 	if (RTMP_GET_PKT_SG(pPacket)) {
 		struct sk_buff *skb = (struct sk_buff *)pPacket;
 		int i, nr_frags = skb_shinfo(skb)->nr_frags;
-		
+
 		info->BufferCount =  nr_frags + 1;
 		info->PhysicalBufferCount = info->BufferCount;
 		info->sg_list[0].data = (VOID *)GET_OS_PKT_DATAPTR(pPacket);
 		info->sg_list[0].len = skb_headlen(skb);
 		for (i = 0; i < nr_frags; i++) {
 			skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
-			
+
 			info->sg_list[i+1].data = ((void *) page_address(frag->page) +
 									frag->page_offset);
 			info->sg_list[i+1].len = frag->size;
@@ -1600,9 +1600,9 @@ PNET_DEV RtmpOSNetDevGetByName(PNET_DEV pNetDev, PSTRING pDevName)
 void RtmpOSNetDeviceRefPut(PNET_DEV pNetDev)
 {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,0)
-	/* 
-	   every time dev_get_by_name is called, and it has returned a valid struct 
-	   net_device*, dev_put should be called afterwards, because otherwise the 
+	/*
+	   every time dev_get_by_name is called, and it has returned a valid struct
+	   net_device*, dev_put should be called afterwards, because otherwise the
 	   machine hangs when the device is unregistered (since dev->refcnt > 1).
 	 */
 	if (pNetDev)
@@ -1695,7 +1695,7 @@ int RtmpOSNetDevAttach(
 		pNetDev->ethtool_ops = &RALINK_Ethtool_Ops;
 #endif
 
-		/* if you don't implement get_stats, just leave the callback function as NULL, a dummy 
+		/* if you don't implement get_stats, just leave the callback function as NULL, a dummy
 		   function will make kernel panic.
 		 */
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35)
@@ -1796,7 +1796,7 @@ PNET_DEV RtmpOSNetDevCreate(
 	status = RtmpOSNetDevRequestName(MC_RowID, pIoctlIF, pNetDev, pNamePrefix, devNum);
 	if (status != NDIS_STATUS_SUCCESS) {
 		/* error! no any available ra name can be used! */
-		DBGPRINT(RT_DEBUG_ERROR, 
+		DBGPRINT(RT_DEBUG_ERROR,
 					("Assign inf name (%s with suffix 0~32) failed\n", pNamePrefix));
 		RtmpOSNetDevFree(pNetDev);
 
@@ -1856,9 +1856,9 @@ UCHAR VLAN_8023_Header_Copy(
 		/* no VLAN tag is needed to insert */
 		memcpy(pData, pHeader802_3, HdrLen);
 	}
-	
+
 	return VLAN_Size;
-}				
+}
 #endif /* CONFIG_AP_SUPPORT */
 
 
@@ -1935,7 +1935,7 @@ VOID RtmpDrvAllMacPrint(
 	os_alloc_mem(NULL, (UCHAR **)&msg, 1024);
 	if (!msg)
 		return;
-	
+
 	orig_fs = get_fs();
 	set_fs(KERNEL_DS);
 
@@ -1986,10 +1986,10 @@ VOID RtmpDrvAllE2PPrint(
 	os_alloc_mem(NULL, (UCHAR **)&msg, 1024);
 	if (!msg)
 		return;
-	
+
 	orig_fs = get_fs();
 	set_fs(KERNEL_DS);
-	
+
 	/* open file */
 	file_w = filp_open(fileName, O_WRONLY | O_CREAT, 0);
 	if (IS_ERR(file_w)) {
@@ -2030,7 +2030,7 @@ VOID RtmpDrvAllRFPrint(
 	struct file *file_w;
 	PSTRING fileName = "RFDump.txt";
 	mm_segment_t orig_fs;
-	
+
 	orig_fs = get_fs();
 	set_fs(KERNEL_DS);
 
@@ -2352,25 +2352,25 @@ VOID RtmpOsDCacheFlush(
 
 #ifdef CONFIG_STA_SUPPORT
 INT RtmpOSNotifyRawData(
-	IN PNET_DEV pNetDev, 
+	IN PNET_DEV pNetDev,
 	IN PUCHAR buff,
-	IN INT len, 
+	IN INT len,
 	IN ULONG type,
 	IN USHORT protocol)
 {
 	struct sk_buff *skb = NULL;
-	
+
 	skb = dev_alloc_skb(len + 2);
-	
-	if (!skb) 
+
+	if (!skb)
 	{
-		DBGPRINT(RT_DEBUG_ERROR,( "%s: failed to allocate sk_buff for notification\n", pNetDev->name));		
-		return -ENOMEM;		
-	} 
-	else 
-	{		
-		skb_reserve(skb, 2);		
-		memcpy(skb_put(skb, len), buff, len);		
+		DBGPRINT(RT_DEBUG_ERROR,( "%s: failed to allocate sk_buff for notification\n", pNetDev->name));
+		return -ENOMEM;
+	}
+	else
+	{
+		skb_reserve(skb, 2);
+		memcpy(skb_put(skb, len), buff, len);
 		skb->len = len;
 		skb->dev = pNetDev;
 #if (LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,21))
@@ -2451,7 +2451,7 @@ void OS_LOAD_CODE_FROM_BIN(unsigned char **image, char *bin_name, void *inf_dev,
 		DBGPRINT(RT_DEBUG_ERROR, ("%s:fw not available(/lib/firmware/%s)\n", __FUNCTION__, bin_name));
 		*image = NULL;
 		return;
-	} 
+	}
 
 	*image = kmalloc(fw_entry->size, GFP_KERNEL);
 	memcpy(*image, fw_entry->data, fw_entry->size);
@@ -2463,25 +2463,25 @@ void OS_LOAD_CODE_FROM_BIN(unsigned char **image, char *bin_name, void *inf_dev,
 
 #ifdef WSC_NFC_SUPPORT
 INT RtmpOSNotifyRawData(
-	IN PNET_DEV pNetDev, 
+	IN PNET_DEV pNetDev,
 	IN PUCHAR buff,
-	IN INT len, 
+	IN INT len,
 	IN ULONG type,
 	IN USHORT protocol)
 {
 	struct sk_buff *skb = NULL;
 
 	skb = dev_alloc_skb(len+2);
-	
-	if (!skb) 
+
+	if (!skb)
 	{
-		DBGPRINT(RT_DEBUG_ERROR,( "%s: failed to allocate sk_buff for notification\n", pNetDev->name));		
-		return -ENOMEM;		
-	} 
-	else 
-	{		
+		DBGPRINT(RT_DEBUG_ERROR,( "%s: failed to allocate sk_buff for notification\n", pNetDev->name));
+		return -ENOMEM;
+	}
+	else
+	{
 		skb_reserve(skb, 2);
-		memcpy(skb_put(skb, len), buff, len);		
+		memcpy(skb_put(skb, len), buff, len);
 		skb->len = len;
 		skb->dev = pNetDev;
 #if (LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,21))
@@ -2789,7 +2789,7 @@ VOID RTMP_OS_Add_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
 
 		__RTMP_OS_Add_Timer(pTimer, timeout);
 	}
-} 
+}
 
 
 VOID RTMP_OS_Mod_Timer(NDIS_MINIPORT_TIMER *pTimerOrg, ULONG timeout)
@@ -3429,7 +3429,7 @@ void RtmpOsSpinLockIrqSave(NDIS_SPIN_LOCK *lock, unsigned long *flags)
 		spin_lock_irqsave((spinlock_t *)(pLock), *flags);
 	else
 		printk("lock> warning! the lock was freed!\n");
-		
+
 }
 
 void RtmpOsSpinUnlockIrqRestore(NDIS_SPIN_LOCK *lock, unsigned long *flags)
@@ -3447,7 +3447,7 @@ void RtmpOsSpinLockIrq(NDIS_SPIN_LOCK *lock)
 {
 	OS_NDIS_SPIN_LOCK *pLock;
 	pLock = (OS_NDIS_SPIN_LOCK *) (lock->pContent);
-	
+
 	if (pLock != NULL)
 		spin_lock_irq((spinlock_t *)(pLock));
 	else
