@@ -1,5 +1,5 @@
 config irqbalance 'irqbalance'
-        option enabled '1'
+        option enabled '0'
 
         # The default value is 10 seconds
         #option interval '10'
