@@ -11,10 +11,7 @@ start() {
 		return
 	fi
 
-	# Spread irq load over 3 cpu cores
-	echo e > /sys/class/net/eth0/queues/rx-0/rps_cpus
-
-	for irq in $(grep "mt76..e" /proc/interrupts | cut -d: -f1 | sed 's, *,,')
+	for irq in $(egrep "mt76..e|ethernet" /proc/interrupts | cut -d: -f1 | sed 's, *,,')
 	do
 			echo "$mask" > "/proc/irq/$irq/smp_affinity"
 			[ $mask = 4 ] && mask=8
