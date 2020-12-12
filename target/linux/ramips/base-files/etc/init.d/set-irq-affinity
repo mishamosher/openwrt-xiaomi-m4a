@@ -11,14 +11,14 @@ start() {
 		return
 	fi
 
-	# Use CPU core 3,4 for Wifi cards
+	# Use CPU core 2,3 for Wifi cards
 	for irq in $(grep "mt76..e" /proc/interrupts | cut -d: -f1 | sed 's, *,,')
 	do
 			echo "$mask" > "/proc/irq/$irq/smp_affinity"
 			[ $mask = 4 ] && mask=8
 	done
 	
-	# Use CPU core 2 for ethernet
+	# Use CPU core 1 for ethernet
 	for irq in $(grep "ethernet" /proc/interrupts | cut -d: -f1 | sed 's, *,,')
 	do
 			echo "2" > "/proc/irq/$irq/smp_affinity"
