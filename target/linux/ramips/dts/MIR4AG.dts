@@ -52,7 +52,7 @@
 	m25p80@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0>;
-		spi-max-frequency = <80000000>;
+		spi-max-frequency = <50000000>; // Factory is 80mhz, but not all boards can run well!
 		m25p,fast-read;
 
 		partitions {
