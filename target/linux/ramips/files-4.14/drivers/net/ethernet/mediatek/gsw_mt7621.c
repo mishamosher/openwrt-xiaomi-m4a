@@ -98,6 +98,9 @@ static void mt7621_hw_init(struct mt7620_gsw *gsw, struct device_node *np)
 	mt7530_mdio_w32(gsw, 0x7000, 0x3);
 	usleep_range(10, 20);
 
+	/* show switch revision number */
+	pr_info("gsw: chip rev: %u\n", rt_sysc_r32(SYSC_REG_CHIP_REV_ID));
+
 	if ((rt_sysc_r32(SYSC_REG_CHIP_REV_ID) & 0xFFFF) == 0x0101) {
 		/* (GE1, Force 1000M/FD, FC ON, MAX_RX_LENGTH 1536) */
 		mtk_switch_w32(gsw, 0x2305e30b, GSW_REG_MAC_P0_MCR);
