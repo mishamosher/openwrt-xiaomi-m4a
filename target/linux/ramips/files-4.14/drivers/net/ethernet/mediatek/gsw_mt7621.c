@@ -101,12 +101,11 @@ static void mt7621_hw_init(struct mt7620_gsw *gsw, struct device_node *np)
 	/* show switch revision number */
 	pr_info("gsw: chip rev: %u\n", rt_sysc_r32(SYSC_REG_CHIP_REV_ID));
 
-	/* MT7621 E2 has FC bug, disable FC on port 5 and 6 */
-	/* We might aswell disable FC for all MT7621 devices */
-		/* (GE1, Force 1000M/FD, FC OFF, MAX_RX_LENGTH 1536) */
-		mtk_switch_w32(gsw, 0x2305e30b, GSW_REG_MAC_P0_MCR);
+		/* Port 5 and 6 enable flow control */
+		/* (GE1, Force 1000M/FD, FC ON, MAX_RX_LENGTH 1536) */
+		mtk_switch_w32(gsw, 0x2305e33b, GSW_REG_MAC_P0_MCR);
 		for (i = 5; i <= 6; i++) {
-			mt7530_mdio_w32(gsw, 0x3000 + (i * 0x100), 0x5e30b);
+			mt7530_mdio_w32(gsw, 0x3000 + (i * 0x100), 0x5e33b);
 		}
 
 	/* (GE2, Link down) */
