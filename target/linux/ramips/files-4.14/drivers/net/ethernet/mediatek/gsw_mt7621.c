@@ -101,13 +101,19 @@ static void mt7621_hw_init(struct mt7620_gsw *gsw, struct device_node *np)
 	/* show switch revision number */
 	pr_info("gsw: chip rev: %u\n", rt_sysc_r32(SYSC_REG_CHIP_REV_ID));
 
-		/* Port 5 and 6 enable flow control */
+		/* Port 5 enable flow control */
 		/* (GE1, Force 1000M/FD, FC ON, MAX_RX_LENGTH 1536) */
 		mtk_switch_w32(gsw, 0x2305e33b, GSW_REG_MAC_P0_MCR);
-		for (i = 5; i <= 6; i++) {
-			mt7530_mdio_w32(gsw, 0x3000 + (i * 0x100), 0x5e33b);
-		}
+		mt7530_mdio_w32(gsw, 0x3600, 0x5e33b);
 
+	/* turn off pause advertisement on all PHYs */
+	/* this appears to cause stuttering if pause is on */
+	for (i = 0; i <= 4; i++) {
+		val = _mt7620_mii_read(gsw, i, 0x04);
+		val &= ~BIT(10);
+		_mt7620_mii_write(gsw, i, 0x04, val);
+	}
+	
 	/* (GE2, Link down) */
 	mtk_switch_w32(gsw, 0x8000, GSW_REG_MAC_P1_MCR);
 
