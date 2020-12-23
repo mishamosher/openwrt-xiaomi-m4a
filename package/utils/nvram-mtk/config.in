@@ -1,0 +1,6 @@
+menu "nvram-mtk Features"
+	depends on PACKAGE_nvram-mtk
+config NVRAM_MTD_NAME
+	string "mtd name for u-boot config"
+	default "u-boot-env"
+endmenu
