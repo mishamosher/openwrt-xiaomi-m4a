@@ -59,17 +59,20 @@
 			compatible = "fixed-partitions";
 			#address-cells = <1>;
 			#size-cells = <1>;
+			
+			partition@0 {
+				label = "flash";
+				reg = <0x0 0x1000000>;
+			};
 
 			partition@0 {
 				label = "u-boot";
 				reg = <0x0 0x30000>;
-				read-only;
 			};
 
 			partition@30000 {
 				label = "u-boot-env";
 				reg = <0x30000 0x10000>;
-				read-only;
 			};
 
 			partition@40000 {
