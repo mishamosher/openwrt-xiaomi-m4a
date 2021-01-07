@@ -1,0 +1,18 @@
+FROM debian:buster
+
+ARG USERUID
+ARG USERGID
+
+ENV USERID=$USERUID \
+    GROUPID=$USERGID
+
+RUN apt-get update && \
+    apt-get install -y bash wget unzip python python-requests rsync nano && \
+    apt-get clean && \
+    groupadd --gid $GROUPID buser && \
+    useradd --uid $USERID --gid $GROUPID -m -s /bin/bash buser
+
+USER buser
+WORKDIR /home/buser
+
+ENTRYPOINT [ "bash" ]
