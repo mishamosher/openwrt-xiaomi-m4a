@@ -8,13 +8,14 @@ import socket
 import subprocess
 
 router_ip_address = "192.168.31.1"
+router_ip_address = input("Router IP address [press enter for using the default {}]: ".format(router_ip_address)) or router_ip_address
 
-try: 
+try:
 	r0 = requests.get("http://{router_ip_address}/cgi-bin/luci/web".format(router_ip_address=router_ip_address), timeout=5)
 except:
 	print ("Xiaomi router not found...")
 	sys.exit(1)
-try:	
+try:
 	mac = re.findall(r'deviceId = \'(.*?)\'', r0.text)[0]
 except:
 	print ("Xiaomi router not found...")
@@ -24,8 +25,8 @@ nonce = "0_" + mac + "_" + str(int(time.time())) + "_" + str(random.randint(1000
 account_str = hashlib.sha1((input("Enter router password: ") + key).encode('utf-8')).hexdigest()
 password = hashlib.sha1((nonce + account_str).encode('utf-8')).hexdigest()
 data = "username=admin&password={password}&logtype=2&nonce={nonce}".format(password=password,nonce=nonce)
-r1 = requests.post("http://{router_ip_address}/cgi-bin/luci/api/xqsystem/login".format(router_ip_address=router_ip_address), 
-	data = data, 
+r1 = requests.post("http://{router_ip_address}/cgi-bin/luci/api/xqsystem/login".format(router_ip_address=router_ip_address),
+	data = data,
 	headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0",
 		"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"})
 

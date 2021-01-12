@@ -4,8 +4,9 @@ import subprocess
 import ftplib
 
 router_ip_address = "192.168.31.1"
+router_ip_address = input("Router IP address [press enter for using the default {}]: ".format(router_ip_address)) or router_ip_address
 
-try:	
+try:
 	tn = telnetlib.Telnet(router_ip_address,timeout=5)
 except:
 	print ("telnet server not found")
