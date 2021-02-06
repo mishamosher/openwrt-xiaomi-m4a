@@ -106,6 +106,14 @@ static void mt7621_hw_init(struct mt7620_gsw *gsw, struct device_node *np)
 	mtk_switch_w32(gsw, 0x2305e33b, GSW_REG_MAC_P0_MCR);
 	mt7530_mdio_w32(gsw, 0x3600, 0x5e33b);
 	
+	/* turn off pause advertisement on all PHYs */
+	/* this appears to cause stuttering if pause is on */
+	for (i = 0; i <= 4; i++) {
+		val = _mt7620_mii_read(gsw, i, 0x04);
+		val &= ~BIT(10);
+		_mt7620_mii_write(gsw, i, 0x04, val);
+	}
+	
 	/* (GE2, Link down) */
 	mtk_switch_w32(gsw, 0x8000, GSW_REG_MAC_P1_MCR);
 
