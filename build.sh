@@ -5,7 +5,7 @@ echo "Update feeds..."
 ./scripts/feeds update -a
 
 echo "Install all packages from feeds..."
-./scripts/feeds install -a
+./scripts/feeds install -a && ./scripts/feeds install -a
 
 echo "Copy default config full to make image"
 cp Config-full .config
@@ -25,7 +25,7 @@ echo "Update feeds..."
 ./scripts/feeds update -a
 
 echo "Install all packages from feeds..."
-./scripts/feeds install -a
+./scripts/feeds install -a && ./scripts/feeds install -a
 
 echo "Copy default config min to make image"
 cp Config-min .config
