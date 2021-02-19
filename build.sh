@@ -1,5 +1,7 @@
 #!/bin/bash
 
+opt=$2
+
 build-full () {
 echo "Update feeds..."
 ./scripts/feeds update -a
@@ -14,7 +16,11 @@ echo "Set to use default config"
 make defconfig
 
 echo "Download packages before build"
-make download
+if [ "$opt" = "nodownload" ]; then
+   echo "Skipping download of packages.."
+else
+   make download
+fi
 
 echo "Start build and log to build.log"
 make -j$(($(nproc)+1)) V=s CONFIG_DEBUG_SECTION_MISMATCH=y 2>&1 | tee build.log
@@ -34,13 +40,18 @@ echo "Set to use default config"
 make defconfig
 
 echo "Download packages before build"
-make download
+if [ "$opt" = "nodownload" ]; then
+   echo "Skipping download of packages.."
+else
+   make download
+fi
 
 echo "Start build and log to build.log"
 make -j$(($(nproc)+1)) V=s CONFIG_DEBUG_SECTION_MISMATCH=y 2>&1 | tee build.log
 }
 
 build-rebuild () {
+make clean
 make defconfig
 echo "Start build and log to build.log"
 make -j$(($(nproc)+1)) V=s CONFIG_DEBUG_SECTION_MISMATCH=y 2>&1 | tee build.log
@@ -72,8 +83,9 @@ case "$1" in
     ;;
   *)
     echo "Usage: $0 {build-full|build-min|build-rebuild|clean-min|clean-full}" >&2
+    echo "Optional: {nodownload = No downloads of packages}" >&2
     exit 1
     ;;
 esac
+shift
 
-#exec "$@"
