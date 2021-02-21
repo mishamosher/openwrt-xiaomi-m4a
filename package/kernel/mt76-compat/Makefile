@@ -1,147 +1,145 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=mt76
-PKG_RELEASE=1
+PKG_NAME:=mt76-compat
+PKG_RELEASE=2
 
 PKG_LICENSE:=GPLv2
 PKG_LICENSE_FILES:=
 
-PKG_SOURCE_URL:=https://github.com/openwrt/mt76
+PKG_SOURCE_URL:=https://github.com/db260179/mt76
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2021-02-15
-PKG_SOURCE_VERSION:=5c768dec13389700ff3fa3d25083fb43d8e7adda
-PKG_MIRROR_HASH:=2ef0cf233bedc20e77c61cd6dd6085e162cce5c2719b5285bcdd8bf92ebf88eb
+PKG_SOURCE_VERSION:=6c0677c11d1c04b64f7aea093435c0d7a0acd05c
 
 PKG_MAINTAINER:=Felix Fietkau <nbd@nbd.name>
 PKG_BUILD_PARALLEL:=1
 
 PKG_CONFIG_DEPENDS += \
-	CONFIG_PACKAGE_kmod-mt76-usb \
-	CONFIG_PACKAGE_kmod-mt76x02-common \
-	CONFIG_PACKAGE_kmod-mt76x0-common \
-	CONFIG_PACKAGE_kmod-mt76x0u \
-	CONFIG_PACKAGE_kmod-mt76x2-common \
-	CONFIG_PACKAGE_kmod-mt76x2 \
-	CONFIG_PACKAGE_kmod-mt76x2u \
-	CONFIG_PACKAGE_kmod-mt7603
+	CONFIG_PACKAGE_kmod-mt76-compat-usb \
+	CONFIG_PACKAGE_kmod-mt76x02-compat-common \
+	CONFIG_PACKAGE_kmod-mt76x0-compat-common \
+	CONFIG_PACKAGE_kmod-mt76x0u-compat \
+	CONFIG_PACKAGE_kmod-mt76x2-compat-common \
+	CONFIG_PACKAGE_kmod-mt76x2-compat \
+	CONFIG_PACKAGE_kmod-mt76x2u-compat \
+	CONFIG_PACKAGE_kmod-mt7603-compat
 
 STAMP_CONFIGURED_DEPENDS := $(STAGING_DIR)/usr/include/mac80211-backport/backport/autoconf.h
 
 include $(INCLUDE_DIR)/kernel.mk
 include $(INCLUDE_DIR)/package.mk
 
-define KernelPackage/mt76-default
+define KernelPackage/mt76-compat-default
   SUBMENU:=Wireless Drivers
   DEPENDS:= \
 	+kmod-mac80211 \
 	+@DRIVER_11AC_SUPPORT +@DRIVER_11N_SUPPORT +@DRIVER_11W_SUPPORT
 endef
 
-define KernelPackage/mt76
+define KernelPackage/mt76-compat
   SUBMENU:=Wireless Drivers
   TITLE:=MediaTek MT76x2/MT7603 wireless driver (metapackage)
   DEPENDS:= \
-	+kmod-mt76-core +kmod-mt76x2 +kmod-mt7603
+	+kmod-mt76-compat-core +kmod-mt76x2-compat +kmod-mt7603-compat
 endef
 
-define KernelPackage/mt76-core
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76-compat-core
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76xx wireless driver
   HIDDEN:=1
   FILES:=\
 	$(PKG_BUILD_DIR)/mt76.ko
 endef
 
-define KernelPackage/mt76-usb
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76-compat-usb
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76xx wireless driver USB support
-  DEPENDS += +kmod-usb-core +kmod-mt76-core
+  DEPENDS += +kmod-usb-core +kmod-mt76-compat-core
   HIDDEN:=1
   FILES:=\
 	$(PKG_BUILD_DIR)/mt76-usb.ko
 endef
 
-define KernelPackage/mt76x02-usb
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76x02-compat-usb
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76x0/MT76x2 USB wireless driver common code
-  DEPENDS+=+kmod-mt76-usb +kmod-mt76x02-common
+  DEPENDS+=+kmod-mt76-compat-usb +kmod-mt76x02-compat-common
   HIDDEN:=1
   FILES:=$(PKG_BUILD_DIR)/mt76x02-usb.ko
 endef
 
-define KernelPackage/mt76x02-common
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76x02-compat-common
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76x0/MT76x2 wireless driver common code
-  DEPENDS+=+kmod-mt76-core
+  DEPENDS+=+kmod-mt76-compat-core
   HIDDEN:=1
   FILES:=$(PKG_BUILD_DIR)/mt76x02-lib.ko
 endef
 
-define KernelPackage/mt76x0-common
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76x0-compat-common
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76x0 wireless driver common code
-  DEPENDS+=+kmod-mt76x02-common
+  DEPENDS+=+kmod-mt76x02-compat-common
   HIDDEN:=1
   FILES:=$(PKG_BUILD_DIR)/mt76x0/mt76x0-common.ko
 endef
 
-define KernelPackage/mt76x0e
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76x0e-compat
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76x0E wireless driver
-  DEPENDS+=@PCI_SUPPORT +kmod-mt76x0-common
+  DEPENDS+=@PCI_SUPPORT +kmod-mt76x0-compat-common
   FILES:=\
 	$(PKG_BUILD_DIR)/mt76x0/mt76x0e.ko
   AUTOLOAD:=$(call AutoProbe,mt76x0e)
 endef
 
-define KernelPackage/mt76x0u
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76x0u-compat
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76x0U wireless driver
-  DEPENDS+=+kmod-mt76x0-common +kmod-mt76x02-usb
+  DEPENDS+=+kmod-mt76x0-compat-common +kmod-mt76x02-compat-usb
   FILES:=\
 	$(PKG_BUILD_DIR)/mt76x0/mt76x0u.ko
   AUTOLOAD:=$(call AutoProbe,mt76x0u)
 endef
 
-define KernelPackage/mt76x2-common
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76x2-compat-common
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76x2 wireless driver common code
-  DEPENDS+=+kmod-mt76-core +kmod-mt76x02-common
+  DEPENDS+=+kmod-mt76-compat-core +kmod-mt76x02-compat-common
   HIDDEN:=1
   FILES:=$(PKG_BUILD_DIR)/mt76x2/mt76x2-common.ko
 endef
 
-define KernelPackage/mt76x2u
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76x2u-compat
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76x2U wireless driver
-  DEPENDS+=+kmod-mt76x2-common +kmod-mt76x02-usb
+  DEPENDS+=+kmod-mt76x2-compat-common +kmod-mt76x02-compat-usb
   FILES:=\
 	$(PKG_BUILD_DIR)/mt76x2/mt76x2u.ko
   AUTOLOAD:=$(call AutoProbe,mt76x2u)
 endef
 
-define KernelPackage/mt76x2
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt76x2-compat
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76x2 wireless driver
-  DEPENDS+=@PCI_SUPPORT +kmod-mt76x2-common
+  DEPENDS+=@PCI_SUPPORT +kmod-mt76x2-compat-common
   FILES:=\
 	$(PKG_BUILD_DIR)/mt76x2/mt76x2e.ko
   AUTOLOAD:=$(call AutoProbe,mt76x2e)
 endef
 
-define KernelPackage/mt7603
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt7603-compat
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT7603 wireless driver
-  DEPENDS+=@PCI_SUPPORT +kmod-mt76-core
+  DEPENDS+=@PCI_SUPPORT +kmod-mt76-compat-core
   FILES:=\
 	$(PKG_BUILD_DIR)/mt7603/mt7603e.ko
   AUTOLOAD:=$(call AutoProbe,mt7603e)
 endef
 
-define KernelPackage/mt7615e
-  $(KernelPackage/mt76-default)
+define KernelPackage/mt7615e-compat
+  $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT7615 wireless driver
-  DEPENDS+=@PCI_SUPPORT +kmod-mt76-core
+  DEPENDS+=@PCI_SUPPORT +kmod-mt76-compat-core
   FILES:=\
 	$(PKG_BUILD_DIR)/mt7615/mt7615e.ko
   AUTOLOAD:=$(call AutoProbe,mt7615e)
@@ -160,37 +158,37 @@ ifdef CONFIG_PACKAGE_MAC80211_MESH
   NOSTDINC_FLAGS += -DCONFIG_MAC80211_MESH
 endif
 
-ifdef CONFIG_PACKAGE_kmod-mt76-usb
+ifdef CONFIG_PACKAGE_kmod-mt76-compat-usb
   PKG_MAKE_FLAGS += CONFIG_MT76_USB=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt76x02-common
+ifdef CONFIG_PACKAGE_kmod-mt76x02-compat-common
   PKG_MAKE_FLAGS += CONFIG_MT76x02_LIB=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt76x02-usb
+ifdef CONFIG_PACKAGE_kmod-mt76x02-compat-usb
   PKG_MAKE_FLAGS += CONFIG_MT76x02_USB=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt76x0-common
+ifdef CONFIG_PACKAGE_kmod-mt76x0-compat-common
   PKG_MAKE_FLAGS += CONFIG_MT76x0_COMMON=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt76x0e
+ifdef CONFIG_PACKAGE_kmod-mt76x0e-compat
   PKG_MAKE_FLAGS += CONFIG_MT76x0E=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt76x0u
+ifdef CONFIG_PACKAGE_kmod-mt76x0u-compat
   PKG_MAKE_FLAGS += CONFIG_MT76x0U=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt76x2-common
+ifdef CONFIG_PACKAGE_kmod-mt76x2-compat-common
   PKG_MAKE_FLAGS += CONFIG_MT76x2_COMMON=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt76x2
+ifdef CONFIG_PACKAGE_kmod-mt76x2-compat
   PKG_MAKE_FLAGS += CONFIG_MT76x2E=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt76x2u
+ifdef CONFIG_PACKAGE_kmod-mt76x2u-compat
   PKG_MAKE_FLAGS += CONFIG_MT76x2U=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt7603
+ifdef CONFIG_PACKAGE_kmod-mt7603-compat
   PKG_MAKE_FLAGS += CONFIG_MT7603E=m
 endif
-ifdef CONFIG_PACKAGE_kmod-mt7615e
+ifdef CONFIG_PACKAGE_kmod-mt7615e-compat
   PKG_MAKE_FLAGS += CONFIG_MT7615E=m
 endif
 
@@ -203,18 +201,18 @@ define Build/Compile
 		modules
 endef
 
-define Package/kmod-mt76/install
+define Package/kmod-mt76-compat/install
 	true
 endef
 
-define KernelPackage/mt76x0-common/install
+define KernelPackage/mt76x0-compat-common/install
 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek
 	cp \
 		$(PKG_BUILD_DIR)/firmware/mt7610e.bin \
 		$(1)/lib/firmware/mediatek
 endef
 
-define KernelPackage/mt76x2-common/install
+define KernelPackage/mt76x2-compat-common/install
 	$(INSTALL_DIR) $(1)/lib/firmware
 	cp \
 		$(PKG_BUILD_DIR)/firmware/mt7662_rom_patch.bin \
@@ -222,18 +220,18 @@ define KernelPackage/mt76x2-common/install
 		$(1)/lib/firmware
 endef
 
-define KernelPackage/mt76x0u/install
+define KernelPackage/mt76x0u-compat/install
 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek
 	ln -sf mt7610e.bin $(1)/lib/firmware/mediatek/mt7610u.bin
 endef
 
-define KernelPackage/mt76x2u/install
+define KernelPackage/mt76x2u-compat/install
 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek
 	ln -sf ../mt7662.bin $(1)/lib/firmware/mediatek/mt7662u.bin
 	ln -sf ../mt7662_rom_patch.bin $(1)/lib/firmware/mediatek/mt7662u_rom_patch.bin
 endef
 
-define KernelPackage/mt7603/install
+define KernelPackage/mt7603-compat/install
 	$(INSTALL_DIR) $(1)/lib/firmware
 	cp $(if $(CONFIG_TARGET_ramips_mt76x8), \
 		$(PKG_BUILD_DIR)/firmware/mt7628_e1.bin \
@@ -245,7 +243,7 @@ define KernelPackage/mt7603/install
 		$(1)/lib/firmware
 endef
 
-define KernelPackage/mt7615e/install
+define KernelPackage/mt7615e-compat/install
 	$(INSTALL_DIR) $(1)/lib/firmware/mediatek
 	cp \
 		$(PKG_BUILD_DIR)/firmware/mt7615_cr4.bin \
@@ -254,16 +252,16 @@ define KernelPackage/mt7615e/install
 		$(1)/lib/firmware/mediatek
 endef
 
-$(eval $(call KernelPackage,mt76-core))
-$(eval $(call KernelPackage,mt76-usb))
-$(eval $(call KernelPackage,mt76x02-usb))
-$(eval $(call KernelPackage,mt76x02-common))
-$(eval $(call KernelPackage,mt76x0-common))
-$(eval $(call KernelPackage,mt76x0e))
-$(eval $(call KernelPackage,mt76x0u))
-$(eval $(call KernelPackage,mt76x2-common))
-$(eval $(call KernelPackage,mt76x2u))
-$(eval $(call KernelPackage,mt76x2))
-$(eval $(call KernelPackage,mt7603))
-$(eval $(call KernelPackage,mt7615e))
-$(eval $(call KernelPackage,mt76))
+$(eval $(call KernelPackage,mt76-compat-core))
+$(eval $(call KernelPackage,mt76-compat-usb))
+$(eval $(call KernelPackage,mt76x02-compat-usb))
+$(eval $(call KernelPackage,mt76x02-compat-common))
+$(eval $(call KernelPackage,mt76x0-compat-common))
+$(eval $(call KernelPackage,mt76x0e-compat))
+$(eval $(call KernelPackage,mt76x0u-compat))
+$(eval $(call KernelPackage,mt76x2-compat-common))
+$(eval $(call KernelPackage,mt76x2u-compat))
+$(eval $(call KernelPackage,mt76x2-compat))
+$(eval $(call KernelPackage,mt7603-compat))
+$(eval $(call KernelPackage,mt7615e-compat))
+$(eval $(call KernelPackage,mt76-compat))
