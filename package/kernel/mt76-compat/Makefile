@@ -42,7 +42,7 @@ define KernelPackage/mt76-compat
 	+kmod-mt76-compat-core +kmod-mt76x2-compat +kmod-mt7603-compat
 endef
 
-define KernelPackage/mt76-compat-compat-core
+define KernelPackage/mt76-compat-core
   $(KernelPackage/mt76-compat-default)
   TITLE:=MediaTek MT76xx wireless driver
   HIDDEN:=1

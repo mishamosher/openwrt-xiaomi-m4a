@@ -313,7 +313,7 @@ define Device/xiaomi_mir4ag
   DEVICE_VENDOR := Xiaomi
   DEVICE_TITLE := Xiaomi Mi Router 4A Gigabit Edition
   DEVICE_MODEL := Mi Router 4A
-  DEVICE_PACKAGES := kmod-mt7603 kmod-mt76x2 wpad-basic uboot-envtools
+  DEVICE_PACKAGES := kmod-mt7603-compat kmod-mt76x2-compat wpad-basic uboot-envtools
 endef
 TARGET_DEVICES += xiaomi_mir4ag
 
