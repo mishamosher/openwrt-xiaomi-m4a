@@ -2,30 +2,6 @@
 
 opt=$2
 
-build-full () {
-echo "Update feeds..."
-./scripts/feeds update -a
-
-echo "Install all packages from feeds..."
-./scripts/feeds install -a && ./scripts/feeds install -a
-
-echo "Copy default config full to make image"
-cp Config-full .config
-
-echo "Set to use default config"
-make defconfig
-
-echo "Download packages before build"
-if [ "$opt" = "nodownload" ]; then
-   echo "Skipping download of packages.."
-else
-   make download
-fi
-
-echo "Start build and log to build.log"
-make -j$(($(nproc)+1)) V=s CONFIG_DEBUG_SECTION_MISMATCH=y 2>&1 | tee build.log
-}
-
 build-min () {
 echo "Update feeds..."
 ./scripts/feeds update -a
@@ -92,9 +68,6 @@ make distclean
 }
 
 case "$1" in
-  build-full)
-    build-full
-    ;;
   build-min)
     build-min
     ;;
@@ -111,7 +84,7 @@ case "$1" in
     clean-full
     ;;
   *)
-    echo "Usage: $0 {build-full|build-official|build-min|build-rebuild|clean-min|clean-full}" >&2
+    echo "Usage: $0 {build-official|build-min|build-rebuild|clean-min|clean-full}" >&2
     echo "Optional: {nodownload = No downloads of packages}" >&2
     exit 1
     ;;
