@@ -34,9 +34,11 @@ zbt-wg2626)
 	ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x1000" "0x10000"
 	;;
 xiaomi,mir3p|\
-xiaomi,mir3g|\
-xiaomi,mir4ag)
+xiaomi,mir3g)
 	ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x1000" "0x20000"
+	;;
+xiaomi,mir4ag)
+	ubootenv_add_uci_config "/dev/mtd2" "0x0" "0x1000" "0x10000"
 	;;
 esac
 
