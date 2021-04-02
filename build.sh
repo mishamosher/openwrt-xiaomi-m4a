@@ -85,6 +85,8 @@ case "$1" in
     ;;
   *)
     echo "Usage: $0 {build-official|build-min|build-rebuild|clean-min|clean-full}" >&2
+    echo "build-official: {Openwrt standard config}" >&2
+    echo "build-min: {Custom build config - Adblock,luci-ssl etc}" >&2
     echo "Optional: {nodownload = No downloads of packages}" >&2
     exit 1
     ;;
