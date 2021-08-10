@@ -99,7 +99,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  	local_irq_save(flags);
  	____napi_schedule(this_cpu_ptr(&softnet_data), n);
  	local_irq_restore(flags);
-@@ -5284,6 +5290,11 @@ EXPORT_SYMBOL(napi_schedule_prep);
+@@ -5291,6 +5297,10 @@ EXPORT_SYMBOL(napi_schedule_prep);
   */
  void __napi_schedule_irqoff(struct napi_struct *n)
  {
@@ -107,10 +107,9 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
 +		queue_work(napi_workq, &n->work);
 +		return;
 +	}
-+
- 	____napi_schedule(this_cpu_ptr(&softnet_data), n);
- }
- EXPORT_SYMBOL(__napi_schedule_irqoff);
+ 	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
+ 		____napi_schedule(this_cpu_ptr(&softnet_data), n);
+ 	else
 @@ -5521,6 +5532,82 @@ static enum hrtimer_restart napi_watchdo
  	return HRTIMER_NORESTART;
  }
